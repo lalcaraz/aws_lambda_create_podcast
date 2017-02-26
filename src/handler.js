@@ -4,8 +4,8 @@
 
 import Aws from "aws-sdk";
 export const S3 = new Aws.S3();
-export const BASE_URL = "https://s3-REGION_HERE.amazonaws.com/BUCKET_NAME_HERE/";
-export const BUCKET_NAME = 'BUCKET_NAME_HERE';
+export const BASE_URL = "https://s3-us-east-2.amazonaws.com/g-podcast/";
+export const BUCKET_NAME = 'g-podcast';
 export const RSS_NAME = 'podcast.rss';
 
 function date2string(date) {
@@ -24,18 +24,11 @@ function date2string(date) {
 }
 
 const itemXml = (d) => {
-  var keys = d.Key.split('/');
-  var name = {
-    'ijuin': '伊集院光 深夜の馬鹿力',
-    'bakusho': '爆笑問題カーボーイ',
-    'yamasato': '山里亮太の不毛な議論',
-    'ogiyahagi': 'おぎやはぎのメガネびいき',
-    'bananaman': 'バナナマンのバナナムーンGOLD',
-    'erekata': 'エレ片のコント太郎'
-  }[keys[1]];
-  var day = keys[2].split('.')[0];
+  var keys = d.Key.split('_');
+  var day = keys[1];
   var url = BASE_URL + d.Key;
   var pub_date = date2string(d.LastModified);
+  var name = 'G Podcast',
 
   return `
     <item>
@@ -56,10 +49,10 @@ const createXml = (items) => {
 <?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
   <channel>
-    <title>TBS Junk</title>
-    <description>JUNK: TBS ラジオ</description>
+    <title>G Podcast</title>
+    <description>el podcast the GeeksRoom</description>
     <pubDate>${now}</pubDate>
-    <language>ja</language>
+    <language>en</language>
 
     ${itemStr}
 
@@ -71,7 +64,7 @@ const createXml = (items) => {
 export const handler = (event, context) => {
     var params = {
         Bucket: BUCKET_NAME,
-        Prefix: 'data/'
+        Prefix: 'episodes/'
     };
 
     var allItems = [];
