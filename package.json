@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Create private podcast",
   "private": true,
-  "main": "index.js",
+  "main": "run.js",
   "keywords": [
     "create_podcast_rss"
   ],
